@@ -35,7 +35,7 @@ class GroundedGenerator:
     Parameters
     ----------
     model_name : str
-        Google Gemini model to use (default: gemini-2.0-flash-lite)
+        Google Gemini model to use (default: gemini-2.5-flash)
     temperature : float
         Model temperature (0-1). Lower = more deterministic. Default: 0.3
     """
