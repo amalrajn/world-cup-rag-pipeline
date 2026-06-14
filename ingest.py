@@ -219,7 +219,6 @@ def main():
     chunk_size = 250
     overlap = 50
 
-    print(f"🔪 Chunking strategy:")
     print(f"   Chunk size: {chunk_size} characters (~40 words)")
     print(f"   Overlap: {overlap} characters (~8 tokens)\n")
 
@@ -245,20 +244,6 @@ def main():
     print(f"Total chunks: {total_chunks}")
     print(f"Average chunks per document: {total_chunks / len(documents):.1f}")
 
-    # Assessment
-    if total_chunks < 50:
-        print(f"\n⚠️  WARNING: Only {total_chunks} chunks — may be too large!")
-        print("   → Chunks may be covering too much ground")
-        print("   → Specific queries may not match precisely")
-        print("   → Consider reducing chunk_size or increasing documents")
-    elif total_chunks > 2000:
-        print(f"\n⚠️  WARNING: {total_chunks} chunks — may be too small!")
-        print("   → Each embedding carries too little meaning")
-        print("   → Similarity search may have difficulty distinguishing signal from noise")
-        print("   → Consider increasing chunk_size")
-    else:
-        print(f"\n✓ GOOD: {total_chunks} chunks is in the optimal range (50-2000)")
-        print("   → Chunks should be retrievable and specific")
 
     print("\n" + "=" * 80)
 
