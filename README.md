@@ -1,43 +1,59 @@
-"""
-Setup Instructions for World Cup RAG System
-============================================
+# World Cup RAG Pipeline
 
-Before running the system, you need to:
+A lightweight Retrieval-Augmented Generation (RAG) demo for World Cup trivia and facts.
 
-1. Setup:
+This repository includes document ingestion, retrieval, generation, and a simple Gradio interface to interact with the system.
 
-$ git clone https://github.com/amalrajn/world-cup-rag-pipeline
-$ cd world-cup-rag-pipeline
+## ✅ What’s included
 
-$ python -m venv .venv
-# Linux or macOS
-$ source .venv/bin/activate
-# Windows
-# .venv\Scripts\activate
+- `scrape.py` — document scraping / content preparation
+- `ingest.py` — build the vector store from the World Cup documents
+- `retrieval.py` — search and retrieve relevant passages
+- `generation.py` — run generation tests with the retrieval pipeline
+- `app.py` — launch the Gradio web interface
+- `documents/` — World Cup documents used for retrieval
 
-$ pip install -r requirements.txt
+## 🚀 Quick setup
 
-2. Get a Google Gemini API Key:
-   - Go to: https://aistudio.google.com/app/apikeys
-   - Click "Create API Key"
-   - Copy the key
+```bash
+git clone https://github.com/amalrajn/world-cup-rag-pipeline
+cd world-cup-rag-pipeline
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
-3. Add the key to .env:
-   - Open .env file in this directory
-   - Replace: GOOGLE_API_KEY=your_api_key_here
-   - With your actual key
+## 🔑 Configure API key
 
-3. Install dependencies:
-   pip install -r requirements.txt
+1. Create a Google Gemini API key at:
+   `https://aistudio.google.com/app/apikeys`
+2. Create a `.env` file in the project root if it does not exist.
+3. Add this line:
 
-4. Run generation tests:
-   python generation.py
+```env
+GOOGLE_API_KEY=your_api_key_here
+```
 
-5. Launch Gradio web interface:
-   python app.py
-   Then open: http://localhost:7860
+## 🧪 Run the project
 
-Questions? Learn more about the pipeline design in planning.md
+- Run generation checks:
+  ```bash
+  python generation.py
+  ```
+
+- Launch the Gradio app:
+  ```bash
+  python app.py
+  ```
+
+Open your browser at `http://localhost:7860`.
+
+## 📚 Notes
+
+- `planning.md` explains the pipeline design in more detail.
+- The `documents/` directory contains all World Cup content used by the system.
+
+## 🎥 Demo
 
 Video demo: https://www.loom.com/share/01451fcee01c4b23984a3a29f5990c5e
-"""
+
