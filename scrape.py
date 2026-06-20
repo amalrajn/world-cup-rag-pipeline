@@ -6,15 +6,15 @@ import time
 
 SOURCES = [
     ("FIFA World Cup records and statistics", "https://en.wikipedia.org/wiki/FIFA_World_Cup_records_and_statistics"),
-    ("World Cup 2026 in numbers", "https://www.aljazeera.com/sports/2026/6/7/world-cup-2026-in-numbers-key-statistical-goals-titles-and-age-records"),
-    ("100 World Cup Facts and Trivia", "https://www.foxsports.com/stories/soccer/world-cup-facts-stats-trivia"),
+    ("History of the FIFA World Cup", "https://en.wikipedia.org/wiki/History_of_the_FIFA_World_Cup"),
+    ("FIFA World Cup", "https://en.wikipedia.org/wiki/FIFA_World_Cup"),
     ("List of FIFA World Cup hosts", "https://en.wikipedia.org/wiki/List_of_FIFA_World_Cup_hosts"),
     ("List of FIFA World Cup songs and anthems", "https://en.wikipedia.org/wiki/List_of_FIFA_World_Cup_songs_and_anthems"),
-    ("World Cup Trivia Quizlet", "https://quizlet.com/gb/748582824/world-cup-trivia-flash-cards/"),
-    ("Unbelievable football facts Reddit", "https://www.reddit.com/r/worldcup/comments/1hjtlku/hit_me_with_your_most_unbelievable_football_facts/"),
-    ("7 little known facts about the World Cup", "https://www.history.co.uk/articles/7-little-known-facts-about-the-world-cup"),
-    ("World Cup Quiz answers", "https://rupertcolley.com/non-fiction/the-world-cup-a-short-history/the-world-cup-quiz/the-world-cup-quiz-answers/the-world-cup-quiz-answers-for-real/"),
-    ("World Cup Ultimate Guide", "https://www.roadtrips.com/luxury-travel-guides/world-cup-ultimate-guide/"),
+    ("List of FIFA World Cup finals", "https://en.wikipedia.org/wiki/List_of_FIFA_World_Cup_finals"),
+    ("Economics of the FIFA World Cup", "https://en.wikipedia.org/wiki/Economics_of_the_FIFA_World_Cup"),
+    ("2026 FIFA World Cup qualification", "https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_qualification"),
+    ("National team appearances in the FIFA World Cup", "https://en.wikipedia.org/wiki/National_team_appearances_in_the_FIFA_World_Cup"),
+    ("List of FIFA World Cup hat-tricks", "https://en.wikipedia.org/wiki/List_of_FIFA_World_Cup_hat-tricks"),
 ]
 
 HEADERS = {

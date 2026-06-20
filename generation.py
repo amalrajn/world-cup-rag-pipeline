@@ -199,7 +199,7 @@ def main():
     # Load and set up retriever
     print("📄 Loading documents and setting up retriever...")
     documents = load_documents("documents")
-    chunker = FixedSizeChunker(chunk_size=250, overlap=50)
+    chunker = FixedSizeChunker(chunk_size=900, overlap=150)
     chunked_docs = {}
     for filename, text in documents.items():
         chunks = chunker.chunk(text)
