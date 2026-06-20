@@ -23,7 +23,7 @@ def initialize_pipeline():
     if _retriever is None or _generator is None:
         # Set up retriever
         documents = load_documents("documents")
-        chunker = FixedSizeChunker(chunk_size=250, overlap=50)
+        chunker = FixedSizeChunker(chunk_size=900, overlap=150)
         chunked_docs = {}
         for filename, text in documents.items():
             chunks = chunker.chunk(text)
@@ -180,7 +180,7 @@ If a question can't be answered from the available documents, the system will sa
     # Launch
     demo.launch(
         server_name="0.0.0.0",
-        server_port=7860,
+        server_port=3000,
         share=False,
         show_error=True
     )

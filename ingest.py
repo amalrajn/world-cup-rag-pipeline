@@ -10,6 +10,20 @@ import os
 import glob
 from pathlib import Path
 
+# Document sources (synced with scrape.py SOURCES)
+SOURCE_NAMES = {
+    "FIFA_World_Cup_records_and_statistics.txt",
+    "History_of_the_FIFA_World_Cup.txt",
+    "FIFA_World_Cup.txt",
+    "List_of_FIFA_World_Cup_hosts.txt",
+    "List_of_FIFA_World_Cup_songs_and_anthems.txt",
+    "List_of_FIFA_World_Cup_finals.txt",
+    "Economics_of_the_FIFA_World_Cup.txt",
+    "2026_FIFA_World_Cup_qualification.txt",
+    "National_team_appearances_in_the_FIFA_World_Cup.txt",
+    "List_of_FIFA_World_Cup_hattricks.txt",
+}
+
 
 class FixedSizeChunker:
     """
@@ -67,7 +81,10 @@ class FixedSizeChunker:
 
 def load_documents(folder: str = "documents") -> dict:
     """
-    Load all .txt files from the documents folder.
+    Load only whitelisted .txt files from the documents folder.
+    
+    Only documents in SOURCE_NAMES are loaded to ensure consistency
+    with the scrape.py SOURCES list.
 
     Returns
     -------
@@ -79,6 +96,12 @@ def load_documents(folder: str = "documents") -> dict:
 
     for filepath in sorted(txt_files):
         filename = os.path.basename(filepath)
+        
+        # Only load documents that are in our SOURCE_NAMES whitelist
+        if filename not in SOURCE_NAMES:
+            print(f"⊘ Skipped (not in SOURCE_NAMES): {filename}")
+            continue
+        
         try:
             with open(filepath, 'r', encoding='utf-8') as f:
                 documents[filename] = f.read()
@@ -216,8 +239,8 @@ def main():
     # Adjusted to smaller chunks for better retrieval precision
     # 40 words ≈ 250 characters (average 6 chars/word + space)
     # 8 tokens ≈ 50 characters overlap
-    chunk_size = 250
-    overlap = 50
+    chunk_size = 900
+    overlap = 150
 
     print(f"   Chunk size: {chunk_size} characters (~40 words)")
     print(f"   Overlap: {overlap} characters (~8 tokens)\n")

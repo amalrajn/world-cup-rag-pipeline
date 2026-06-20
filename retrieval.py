@@ -55,18 +55,34 @@ class EmbeddingRetriever:
             Dictionary mapping filenames to lists of chunks from ingest.py
         """
         print("🔄 Setting up vector store...")
-        
-        # Try to reuse existing collection (fast if already embedded)
+
+        # Expected chunk count for the current document set. Used to decide
+        # whether a persisted collection is still in sync with documents/.
+        expected_count = sum(len(chunks) for chunks in chunked_docs.values())
+
+        # Try to reuse existing collection (fast if already embedded), but only
+        # if it matches the current documents. If documents were added/removed,
+        # the persisted store would otherwise serve stale chunks from deleted
+        # files, so we rebuild it instead.
         existing_collections = self.client.list_collections()
         collection_names = [c.name for c in existing_collections]
-        
+
         if "world_cup_chunks" in collection_names:
-            print("  Reusing existing collection...")
-            self.collection = self.client.get_collection(name="world_cup_chunks")
-            count = self.collection.count()
-            print(f"✓ Loaded existing collection with {count} chunks\n")
-            return
-        
+            existing = self.client.get_collection(name="world_cup_chunks")
+            existing_count = existing.count()
+
+            if existing_count == expected_count:
+                print("  Reusing existing collection...")
+                self.collection = existing
+                print(f"✓ Loaded existing collection with {existing_count} chunks\n")
+                return
+
+            print(
+                f"  Documents changed (store has {existing_count} chunks, "
+                f"current docs produce {expected_count}); rebuilding..."
+            )
+            self.client.delete_collection(name="world_cup_chunks")
+
         # Create new collection
         print("  Creating new collection...")
         self.collection = self.client.create_collection(
@@ -200,7 +216,7 @@ def main():
     print(f"✓ Loaded {len(documents)} documents\n")
     
     print("🔪 Chunking documents...")
-    chunker = FixedSizeChunker(chunk_size=250, overlap=50)
+    chunker = FixedSizeChunker(chunk_size=900, overlap=150)
     chunked_docs = {}
     total_chunks = 0
     for filename, text in documents.items():
