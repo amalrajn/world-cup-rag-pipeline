@@ -84,9 +84,9 @@ Grounded: {'Yes' if result['sources'] else 'No sources'}"""
     return result["answer"], sources_text, diagnostics
 
 
-def main():
-    """Build and launch Gradio interface."""
-    
+def build_demo():
+    """Build the Gradio interface (initializes the pipeline; does not launch)."""
+
     # Initialize on startup
     initialize_pipeline()
     
@@ -179,14 +179,18 @@ The system only uses information from provided World Cup documents.
 If a question can't be answered from the available documents, the system will say so explicitly.
         """)
     
-    # Launch. Host/port come from the environment so this works both locally
-    # and on Hugging Face Spaces (which sets GRADIO_SERVER_PORT=7860).
+    return demo
+
+
+# Build a module-level `demo` so Hugging Face Spaces can discover and launch it.
+demo = build_demo()
+
+
+if __name__ == "__main__":
+    # Local run. Host/port come from the environment so this also matches how
+    # Hugging Face Spaces launches (it sets GRADIO_SERVER_PORT=7860).
     demo.launch(
         server_name=os.environ.get("GRADIO_SERVER_NAME", "0.0.0.0"),
         server_port=int(os.environ.get("GRADIO_SERVER_PORT", 7860)),
         show_error=True,
     )
-
-
-if __name__ == "__main__":
-    main()
