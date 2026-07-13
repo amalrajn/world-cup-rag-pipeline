@@ -187,10 +187,15 @@ demo = build_demo()
 
 
 if __name__ == "__main__":
-    # Local run. Host/port come from the environment so this also matches how
-    # Hugging Face Spaces launches (it sets GRADIO_SERVER_PORT=7860).
+    # Bind to the platform-provided port. Render sets PORT; fall back to
+    # GRADIO_SERVER_PORT and finally 7860 for local runs.
+    port = int(
+        os.environ.get("PORT")
+        or os.environ.get("GRADIO_SERVER_PORT")
+        or 7860
+    )
     demo.launch(
         server_name=os.environ.get("GRADIO_SERVER_NAME", "0.0.0.0"),
-        server_port=int(os.environ.get("GRADIO_SERVER_PORT", 7860)),
+        server_port=port,
         show_error=True,
     )

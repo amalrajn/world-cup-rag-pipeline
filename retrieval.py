@@ -9,14 +9,14 @@ Provides retrieval function to find top-k relevant chunks for a query.
 import os
 import numpy as np
 import chromadb
-from sentence_transformers import SentenceTransformer
 from ingest import load_documents, FixedSizeChunker
 
 
 class EmbeddingRetriever:
     """
-    Manages embedding and retrieval of chunks using ChromaDB and SentenceTransformer.
-    Uses persistent storage to avoid re-embedding on each startup.
+    Manages embedding and retrieval of chunks using ChromaDB.
+    ChromaDB embeds documents and queries with its built-in all-MiniLM-L6-v2
+    (ONNX) model. Uses persistent storage to avoid re-embedding on each startup.
     
     Parameters
     ----------
@@ -33,12 +33,8 @@ class EmbeddingRetriever:
         self.top_k = top_k
         self.persist_dir = persist_dir
         
-        # Load embedding model
-        print(f"Loading embedding model: {embedding_model}...")
-        self.embedder = SentenceTransformer(embedding_model)
-        print("Model loaded\n")
-
-        # Initialize ChromaDB with persistent storage
+        # ChromaDB embeds documents and queries itself using its built-in
+        # all-MiniLM-L6-v2 (ONNX) model, so no separate embedder is loaded here.
         os.makedirs(persist_dir, exist_ok=True)
         print(f"Connecting to ChromaDB at {persist_dir}...")
         self.client = chromadb.PersistentClient(path=persist_dir)
