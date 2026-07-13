@@ -131,7 +131,7 @@ def main():
     os.makedirs("documents", exist_ok=True)
 
     print("=" * 60)
-    print("RAG-READY SCRAPER (FIXED VERSION)")
+    print("RAG-READY SCRAPER")
     print("=" * 60)
 
     success = 0
@@ -143,13 +143,13 @@ def main():
             text = scrape_url(url)
 
             if save_document(title, text, "documents"):
-                print(f"✓ Saved ({len(text)} chars)")
+                print(f"Saved ({len(text)} chars)")
                 success += 1
             else:
-                print("✗ Too little content")
+                print("Too little content")
 
         except Exception as e:
-            print(f"✗ Error: {e}")
+            print(f"Error: {e}")
 
         time.sleep(1)
 

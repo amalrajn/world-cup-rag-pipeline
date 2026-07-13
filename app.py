@@ -56,7 +56,7 @@ def ask_question(question: str) -> tuple[str, str, str]:
     result = end_to_end_query(question, _retriever, _generator)
     
     # Format sources
-    sources_text = "\n".join(f"📄 {source}" for source in result["sources"])
+    sources_text = "\n".join(source for source in result["sources"])
     if not sources_text:
         sources_text = "No sources retrieved"
     
@@ -77,7 +77,7 @@ def ask_question(question: str) -> tuple[str, str, str]:
 {distances_text}
 
 Answer Quality: {quality}
-Grounded: {'✅ Yes' if result['sources'] else '❌ No sources'}"""
+Grounded: {'Yes' if result['sources'] else 'No sources'}"""
     
     return result["answer"], sources_text, diagnostics
 
@@ -91,7 +91,7 @@ def main():
     # Build interface
     with gr.Blocks(title="World Cup Q&A System", theme=gr.themes.Soft()) as demo:
         gr.Markdown("""
-# ⚽ World Cup RAG System
+# World Cup RAG System
 **Retrieval-Augmented Generation for World Cup Questions**
 
 Ask questions about World Cup records, history, facts, and trivia. 
@@ -105,24 +105,24 @@ The system will search through documents and provide grounded answers with sourc
                     placeholder="e.g., 'Who has scored the most goals in World Cup history?'",
                     lines=2
                 )
-                ask_btn = gr.Button("🔍 Ask", scale=1)
+                ask_btn = gr.Button("Ask", scale=1)
             
         with gr.Row():
             with gr.Column(scale=2):
                 answer_output = gr.Textbox(
-                    label="📝 Answer",
+                    label="Answer",
                     lines=8,
                     interactive=False
                 )
             
             with gr.Column(scale=1):
                 sources_output = gr.Textbox(
-                    label="📚 Retrieved Sources",
+                    label="Retrieved Sources",
                     lines=8,
                     interactive=False
                 )
                 diagnostics_output = gr.Textbox(
-                    label="🔧 Diagnostics",
+                    label="Diagnostics",
                     lines=6,
                     interactive=False
                 )

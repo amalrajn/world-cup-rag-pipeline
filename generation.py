@@ -44,8 +44,8 @@ class GroundedGenerator:
         self.model_name = model_name
         self.temperature = temperature
         
-        print(f"📝 Initializing {model_name} for grounded generation...")
-        print(f"✓ Model initialized\n")
+        print(f"Initializing {model_name} for grounded generation...")
+        print("Model initialized\n")
 
     def format_context(self, retrieved_chunks: list[dict]) -> str:
         """
@@ -173,18 +173,18 @@ def print_generation_result(query: str, result: dict, query_num: int = None) -> 
     print("\n" + "=" * 80)
     print(header)
     print("=" * 80)
-    print(f"\n❓ {query}\n")
-    print(f"📝 ANSWER:\n{result['answer']}\n")
-    print(f"📚 SOURCES: {', '.join(result['sources'])}")
-    print(f"📊 Distance scores: {', '.join(f'{d:.4f}' for d in result['distance_scores'])}")
-    
+    print(f"\n{query}\n")
+    print(f"ANSWER:\n{result['answer']}\n")
+    print(f"SOURCES: {', '.join(result['sources'])}")
+    print(f"Distance scores: {', '.join(f'{d:.4f}' for d in result['distance_scores'])}")
+
     # Grounding assessment
     if "don't have enough information" in result['answer'].lower():
-        print("✅ GROUNDING: Model correctly rejected out-of-scope question")
+        print("GROUNDING: Model correctly rejected out-of-scope question")
     elif result['sources']:
-        print(f"✅ GROUNDING: Answer grounded in {len(result['sources'])} document(s)")
+        print(f"GROUNDING: Answer grounded in {len(result['sources'])} document(s)")
     else:
-        print("⚠️  GROUNDING: No sources returned - may be hallucinated")
+        print("GROUNDING: No sources returned - may be hallucinated")
     
     print()
 
@@ -197,7 +197,7 @@ def main():
     print("=" * 80 + "\n")
     
     # Load and set up retriever
-    print("📄 Loading documents and setting up retriever...")
+    print("Loading documents and setting up retriever...")
     documents = load_documents("documents")
     chunker = FixedSizeChunker(chunk_size=900, overlap=150)
     chunked_docs = {}
@@ -207,7 +207,7 @@ def main():
     
     retriever = EmbeddingRetriever(embedding_model="all-MiniLM-L6-v2", top_k=5)
     retriever.setup_vector_store(chunked_docs)
-    print(f"✓ Retriever ready\n")
+    print("Retriever ready\n")
     
     # Set up generator
     generator = GroundedGenerator(model_name="gemini-2.5-flash", temperature=0.3)
@@ -233,16 +233,16 @@ def main():
     print("GROUNDING ASSESSMENT")
     print("=" * 80)
     print("""
-✓ System enforces grounding through:
+System enforces grounding through:
   1. Strong system prompt that prohibits training knowledge
   2. Explicit instruction to reject out-of-scope questions
   3. Retrieved context provided as the ONLY source
   4. Source attribution required in response format
 
-✓ Tested scenarios:
-  1. In-domain questions → Should cite sources ✓
-  2. In-domain questions → Should cite sources ✓
-  3. Out-of-domain questions → Should refuse to answer ✓
+Tested scenarios:
+  1. In-domain questions -> Should cite sources
+  2. In-domain questions -> Should cite sources
+  3. Out-of-domain questions -> Should refuse to answer
 
 Next: Wire up Gradio interface for user interaction
 """)

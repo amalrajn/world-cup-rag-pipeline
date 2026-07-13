@@ -99,15 +99,15 @@ def load_documents(folder: str = "documents") -> dict:
         
         # Only load documents that are in our SOURCE_NAMES whitelist
         if filename not in SOURCE_NAMES:
-            print(f"⊘ Skipped (not in SOURCE_NAMES): {filename}")
+            print(f"Skipped (not in SOURCE_NAMES): {filename}")
             continue
         
         try:
             with open(filepath, 'r', encoding='utf-8') as f:
                 documents[filename] = f.read()
-            print(f"✓ Loaded: {filename} ({len(documents[filename])} characters)")
+            print(f"Loaded: {filename} ({len(documents[filename])} characters)")
         except Exception as e:
-            print(f"✗ Failed to load {filename}: {e}")
+            print(f"Failed to load {filename}: {e}")
 
     return documents
 
@@ -128,7 +128,7 @@ def chunk_documents(documents: dict, chunker: FixedSizeChunker) -> dict:
         chunks = chunker.chunk(text)
         chunked[filename] = chunks
         total_chunks += len(chunks)
-        print(f"  → {len(chunks)} chunks from {filename}")
+        print(f"  {len(chunks)} chunks from {filename}")
 
     return chunked, total_chunks
 
@@ -169,11 +169,11 @@ def inspect_chunks(chunked_docs: dict, num_samples: int = 5) -> None:
             # Check for quality issues
             issues = []
             if len(text.split()) < 5:
-                issues.append("❌ Too small/fragmented")
+                issues.append("Too small/fragmented")
             if text.endswith('-') or text[-1:].isalpha() == False and text[-1:] not in '.!?,;:':
-                issues.append("⚠️  May be mid-word")
+                issues.append("May be mid-word")
             if '&' in text or '<' in text or '[' in text:
-                issues.append("⚠️  Possible HTML artifact")
+                issues.append("Possible HTML artifact")
 
             print(f"\n--- Chunk #{chunk_count} from {filename} ---")
             print(f"Index: {chunk['index']}, Start char: {chunk['start_char']}")
@@ -211,9 +211,9 @@ def print_full_chunks(chunked_docs: dict, num_chunks: int = 5) -> None:
             chunk = chunks[idx]
             chunk_count += 1
 
-            print(f"\n{'─' * 80}")
+            print(f"\n{'-' * 80}")
             print(f"CHUNK {chunk_count} | From: {filename} | Index: {chunk['index']}")
-            print(f"{'─' * 80}")
+            print(f"{'-' * 80}")
             print(f"{chunk['text']}")
             print()
 
@@ -226,12 +226,12 @@ def main():
     print("=" * 80 + "\n")
 
     # Load documents
-    print("📄 Loading documents...")
+    print("Loading documents...")
     documents = load_documents("documents")
-    print(f"✓ Loaded {len(documents)} documents\n")
+    print(f"Loaded {len(documents)} documents\n")
 
     if not documents:
-        print("❌ No documents found. Ensure documents/ folder contains .txt files")
+        print("No documents found. Ensure documents/ folder contains .txt files")
         return
 
     # Configure chunker
@@ -251,7 +251,7 @@ def main():
     # Chunk all documents
     print("Chunking documents...")
     chunked_docs, total_chunks = chunk_documents(documents, chunker)
-    print(f"\n✓ Total chunks created: {total_chunks}\n")
+    print(f"\nTotal chunks created: {total_chunks}\n")
 
     # Inspect chunks
     inspect_chunks(chunked_docs, num_samples=5)

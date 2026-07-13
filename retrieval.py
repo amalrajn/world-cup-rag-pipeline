@@ -34,13 +34,13 @@ class EmbeddingRetriever:
         self.persist_dir = persist_dir
         
         # Load embedding model
-        print(f"📦 Loading embedding model: {embedding_model}...")
+        print(f"Loading embedding model: {embedding_model}...")
         self.embedder = SentenceTransformer(embedding_model)
-        print(f"✓ Model loaded\n")
-        
+        print("Model loaded\n")
+
         # Initialize ChromaDB with persistent storage
         os.makedirs(persist_dir, exist_ok=True)
-        print(f"🔄 Connecting to ChromaDB at {persist_dir}...")
+        print(f"Connecting to ChromaDB at {persist_dir}...")
         self.client = chromadb.PersistentClient(path=persist_dir)
         self.collection = None
 
@@ -54,7 +54,7 @@ class EmbeddingRetriever:
         chunked_docs : dict
             Dictionary mapping filenames to lists of chunks from ingest.py
         """
-        print("🔄 Setting up vector store...")
+        print("Setting up vector store...")
 
         # Expected chunk count for the current document set. Used to decide
         # whether a persisted collection is still in sync with documents/.
@@ -74,7 +74,7 @@ class EmbeddingRetriever:
             if existing_count == expected_count:
                 print("  Reusing existing collection...")
                 self.collection = existing
-                print(f"✓ Loaded existing collection with {existing_count} chunks\n")
+                print(f"Loaded existing collection with {existing_count} chunks\n")
                 return
 
             print(
@@ -118,7 +118,7 @@ class EmbeddingRetriever:
                 metadatas=all_metadata[i:batch_end],
             )
         
-        print(f"✓ Embedded and stored {len(all_chunks)} chunks in ChromaDB\n")
+        print(f"Embedded and stored {len(all_chunks)} chunks in ChromaDB\n")
 
     def retrieve(self, query: str, k: int = None) -> list[dict]:
         """
@@ -177,10 +177,10 @@ def print_retrieval_results(query: str, results: list[dict], query_num: int = No
     print("\n" + "=" * 80)
     print(header)
     print("=" * 80)
-    print(f"\n❓ {query}\n")
-    
+    print(f"\n{query}\n")
+
     if not results:
-        print("❌ No results found\n")
+        print("No results found\n")
         return
     
     for i, chunk in enumerate(results, 1):
@@ -191,13 +191,13 @@ def print_retrieval_results(query: str, results: list[dict], query_num: int = No
         
         # Assess score quality
         if chunk['distance'] < 0.3:
-            assessment = "✅ Excellent match"
+            assessment = "Excellent match"
         elif chunk['distance'] < 0.5:
-            assessment = "✅ Good match"
+            assessment = "Good match"
         elif chunk['distance'] < 0.7:
-            assessment = "⚠️  Moderate match"
+            assessment = "Moderate match"
         else:
-            assessment = "❌ Weak match"
+            assessment = "Weak match"
         
         print(f"Assessment: {assessment}")
         print(f"\nContent:\n{chunk['text']}\n")
@@ -211,11 +211,11 @@ def main():
     print("=" * 80 + "\n")
     
     # Load and chunk documents
-    print("📄 Loading documents...")
+    print("Loading documents...")
     documents = load_documents("documents")
-    print(f"✓ Loaded {len(documents)} documents\n")
-    
-    print("🔪 Chunking documents...")
+    print(f"Loaded {len(documents)} documents\n")
+
+    print("Chunking documents...")
     chunker = FixedSizeChunker(chunk_size=900, overlap=150)
     chunked_docs = {}
     total_chunks = 0
@@ -223,7 +223,7 @@ def main():
         chunks = chunker.chunk(text)
         chunked_docs[filename] = chunks
         total_chunks += len(chunks)
-    print(f"✓ Created {total_chunks} chunks\n")
+    print(f"Created {total_chunks} chunks\n")
     
     # Set up retriever and embed chunks
     retriever = EmbeddingRetriever(embedding_model="all-MiniLM-L6-v2", top_k=5)
@@ -255,17 +255,17 @@ def main():
     print("RETRIEVAL QUALITY ASSESSMENT")
     print("=" * 80)
     
-    print("\n✓ Retrieval tests completed")
+    print("\nRetrieval tests completed")
     print("\nChecklist:")
-    print("  □ Retrieved chunks visibly relate to each query")
-    print("  □ Distance scores on top results are below 0.5")
-    print("  □ Source metadata is correct")
-    print("  □ No leftover HTML or boilerplate in chunks")
+    print("  [ ] Retrieved chunks visibly relate to each query")
+    print("  [ ] Distance scores on top results are below 0.5")
+    print("  [ ] Source metadata is correct")
+    print("  [ ] No leftover HTML or boilerplate in chunks")
     print("\nIf any of these don't check out, debug:")
-    print("  • Print full chunk content above")
-    print("  • Check distance scores (>0.6 = weak match)")
-    print("  • Verify metadata is correctly stored")
-    print("  • Consider adjusting chunk size or overlap")
+    print("  - Print full chunk content above")
+    print("  - Check distance scores (>0.6 = weak match)")
+    print("  - Verify metadata is correctly stored")
+    print("  - Consider adjusting chunk size or overlap")
     
     print("\n" + "=" * 80)
 
