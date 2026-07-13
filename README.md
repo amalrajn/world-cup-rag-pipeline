@@ -1,3 +1,14 @@
+---
+title: World Cup RAG System
+emoji: ⚽
+colorFrom: blue
+colorTo: green
+sdk: gradio
+sdk_version: 6.9.0
+app_file: app.py
+pinned: false
+---
+
 # World Cup RAG Pipeline
 
 A lightweight Retrieval-Augmented Generation (RAG) demo for World Cup trivia and facts.

@@ -6,6 +6,8 @@ User-friendly query interface for the complete RAG pipeline.
 Retrieves documents and generates grounded answers with source attribution.
 """
 
+import os
+
 import gradio as gr
 from generation import end_to_end_query, EmbeddingRetriever, GroundedGenerator
 from retrieval import load_documents, FixedSizeChunker
@@ -177,12 +179,12 @@ The system only uses information from provided World Cup documents.
 If a question can't be answered from the available documents, the system will say so explicitly.
         """)
     
-    # Launch
+    # Launch. Host/port come from the environment so this works both locally
+    # and on Hugging Face Spaces (which sets GRADIO_SERVER_PORT=7860).
     demo.launch(
-        server_name="0.0.0.0",
-        server_port=3000,
-        share=False,
-        show_error=True
+        server_name=os.environ.get("GRADIO_SERVER_NAME", "0.0.0.0"),
+        server_port=int(os.environ.get("GRADIO_SERVER_PORT", 7860)),
+        show_error=True,
     )
 
 
