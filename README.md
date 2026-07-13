@@ -36,6 +36,11 @@ GOOGLE_API_KEY=your_api_key_here
 
 ## 🧪 Run the project
 
+- Scrape documents:
+  ```bash
+  python scrape.py
+  ```
+
 - Run generation checks:
   ```bash
   python generation.py
