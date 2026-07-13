@@ -103,9 +103,10 @@ class EmbeddingRetriever:
                     "start_char": chunk["start_char"],
                 })
         
-        # Add chunks to collection in batches
+        # Add chunks to collection in batches. Small batches keep peak memory
+        # low during embedding, which matters on 512MB hosts.
         print(f"  Embedding and storing {len(all_chunks)} chunks...")
-        batch_size = 50
+        batch_size = 16
         for i in range(0, len(all_chunks), batch_size):
             batch_end = min(i + batch_size, len(all_chunks))
             self.collection.add(

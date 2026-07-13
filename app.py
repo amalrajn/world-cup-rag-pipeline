@@ -198,4 +198,7 @@ if __name__ == "__main__":
         server_name=os.environ.get("GRADIO_SERVER_NAME", "0.0.0.0"),
         server_port=port,
         show_error=True,
+        # Disable server-side rendering so Gradio doesn't spawn a Node.js
+        # process — saves memory on small (512MB) hosts like Render's free tier.
+        ssr_mode=False,
     )
